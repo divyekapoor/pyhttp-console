@@ -9,8 +9,8 @@ Installation
 
 Prerequisites: termcolor and colorama
 
-   easy_install termcolor
-   easy_install colorama
+    easy_install termcolor
+    easy_install colorama
 
 Alternatively, if you are a pip user
 
