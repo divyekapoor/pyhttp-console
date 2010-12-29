@@ -76,8 +76,10 @@ class HTTPRepl(Cmd):
 
         self.urlparts["path"] += line
         self.urlparts["query"] = self.data
-
-        request = Request(self._get_url(), None, self.headers)
+        
+        url = self._get_url()
+        print "Requesting ", colored(url, "yellow")
+        request = Request(url, None, self.headers)
         self._execute(request)
 
         self.urlparts["query"] = old_query
@@ -86,7 +88,9 @@ class HTTPRepl(Cmd):
 
     def do_post(self, line):
         """ Perform a POST request on a URL. Set the data for the post request via the data argument."""
-        request = Request(self._get_url() + line, self.data, self.headers)
+        url = self._get_url() + line
+        print "Requesting ", colored(url, "yellow")
+        request = Request(url, self.data, self.headers)
         self._execute(request)
 
     def do_headers(self, line):
@@ -143,8 +147,8 @@ class HTTPRepl(Cmd):
 
 if __name__ == "__main__":
     print ">", colored("pyhttp-console v.0.1", "white", attrs=["bold"])
-    print """> Simple Operations: get, post, url, port, cd, data
-> Type help for help, quit to exit
+    print """> Simple Operations: get, post, url, port, cd, data, json, path
+> Type help for help, quit or q to exit
     """
 
     shell = HTTPRepl()
