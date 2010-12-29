@@ -7,7 +7,9 @@ located at http://github.com/cloudhead/http-console
 QuickStart
 --------
 Assuming you have CouchDB installed and running on port 5984, this is how a typical session looks like.
-![Usage Example](http://dl.dropbox.com/u/7409018/http-console.png)
+![Usage Example][1]
+
+[1]: http://dl.dropbox.com/u/7409018/http-console.png
 
 
 Installation
@@ -34,7 +36,7 @@ Feedback
 --------
 
 I would love to hear from you as to the improvements that can be made to this project.
-Catch me on Twitter at http://twitter.com/divyekapoor and drop your thoughts.
+Catch me on Twitter at <http://twitter.com/divyekapoor> and drop your thoughts.
 In case you encounter bugs, feel free to add an issue to the project.
 
 Major Similarities
