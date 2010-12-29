@@ -16,7 +16,6 @@ from urlparse import urlparse,urlunparse
 from cmd2 import Cmd
 from urllib2 import Request
 
-
 class HTTPRepl(Cmd):
     ''' 
         HTTPRepl aims to implement a Read, Eval, Print Loop for working with HTTP Servers.
@@ -143,5 +142,10 @@ class HTTPRepl(Cmd):
        
 
 if __name__ == "__main__":
+    print "> ", colored("pyhttp-console v.0.1", "white", attrs=["bold"])
+    print """> Simple Operations: get, post, url, port, cd, data
+> Type help for help, quit to exit
+    """
+
     shell = HTTPRepl()
     shell.cmdloop()
