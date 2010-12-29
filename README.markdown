@@ -57,4 +57,4 @@ Todo
 1. PUT, HEAD support
 1. Tests
 1. Headers add and remove support
-
+1. HTTP response body colorize
