@@ -63,7 +63,7 @@ class HTTPRepl(Cmd):
             f = urllib2.urlopen(request)
             print colored("HTTP Status: " + str(f.getcode()) + " " + f.msg, 'green', attrs=['bold'])
             for h,v in f.headers.dict.items():
-                print colored(h.capitalize() + ": ","white", attrs=['bold']), v
+                print colored(h.capitalize() + ":","white", attrs=['bold']), v
             print "\n"
             print f.read()
         except (urllib2.HTTPError, urllib2.URLError, IOError) as e:
