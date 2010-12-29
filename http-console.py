@@ -142,7 +142,7 @@ class HTTPRepl(Cmd):
        
 
 if __name__ == "__main__":
-    print "> ", colored("pyhttp-console v.0.1", "white", attrs=["bold"])
+    print ">", colored("pyhttp-console v.0.1", "white", attrs=["bold"])
     print """> Simple Operations: get, post, url, port, cd, data
 > Type help for help, quit to exit
     """
