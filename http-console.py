@@ -66,32 +66,48 @@ class HTTPRepl(Cmd):
                 print colored(h.capitalize() + ": ","white", attrs=['bold']), v
             print "\n"
             print f.read()
-        except urllib2.HTTPError, e:
+        except (urllib2.HTTPError, urllib2.URLError, IOError) as e:
             print colored(e, 'red', attrs=['bold'])
  
+    def _set_temp_path(self, line):
+        """ This function temporarily modifies the path to include the relative/absolute path provided
+        as part of the GET or POST request """
+        self._old_path = self.urlparts["path"]
+
+        if not line.startswith("/"):
+            if not self.urlparts["path"].endswith("/"):
+                self.urlparts["path"] += "/"
+            self.urlparts["path"] += line
+        else:
+            self.urlparts["path"] = line
+
+    def _restore_path(self):
+        self.urlparts["path"] = self._old_path
+        
     def do_get(self, line):
         """ Perform a GET request on the server indicated by the current path """
-        old_path = self.urlparts["path"]
         old_query = self.urlparts["query"]
-
-        self.urlparts["path"] += line
         self.urlparts["query"] = self.data
-        
+
+        self._set_temp_path(line)
         url = self._get_url()
         print "Requesting ", colored(url, "yellow")
         request = Request(url, None, self.headers)
         self._execute(request)
 
         self.urlparts["query"] = old_query
-        self.urlparts["path"] = old_path
-
+        self._restore_path()
 
     def do_post(self, line):
         """ Perform a POST request on a URL. Set the data for the post request via the data argument."""
-        url = self._get_url() + line
+        self._set_temp_path(line)
+        
+        url = self._get_url()
         print "Requesting ", colored(url, "yellow")
         request = Request(url, self.data, self.headers)
         self._execute(request)
+        
+        self._restore_path()
 
     def do_headers(self, line):
         print json.dumps(self.headers, indent=1)
@@ -103,10 +119,14 @@ class HTTPRepl(Cmd):
             print self._get_url()
 
     def do_port(self, line):
+        hostport = self.urlparts["netloc"].split(":", 1)
         if line == "":
-            print self.urlparts["netloc"].split(":")[-1]
+            if len(hostport) > 1:
+                print hostport[1]
+            else:
+                print 80 # Assume default port for HTTP
         else:
-            host, port = self.urlparts["netloc"].split(":", 1)
+            host = hostport[0]
             port = line
             self.urlparts["netloc"] = host + ":" + port
 
@@ -120,13 +140,15 @@ class HTTPRepl(Cmd):
     def do_cd(self, line):
         ''' Change the current path on the server. Use ./ to create a relative path, / for an absolute path and ../ to go up '''
         if line == "":
-            self.urlparts["path"] = "/"
-        elif line.startswith("./"):
-            self.urlparts["path"] += line[line.index("/"):]
+            self.urlparts["path"] = ""
         elif line.startswith("/"):
-            self.urlparts["path"] = line
+            self.urlparts["path"] = line[1:]
         elif line.startswith(".."):
             self.urlparts["path"] = self.urlparts["path"].rsplit("/", line.count(".."))[0]
+        else:
+            if not self.urlparts["path"].endswith("/"):
+                self.urlparts["path"] += "/"
+            self.urlparts["path"] += line
         
         self.urlparts["path"].replace("//", "/")
         self._update_prompt()
