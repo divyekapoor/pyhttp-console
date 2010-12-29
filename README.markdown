@@ -51,12 +51,6 @@ I would love to hear from you as to the improvements that can be made to this pr
 Catch me on Twitter at <http://twitter.com/divyekapoor> and drop your thoughts.
 In case you encounter bugs, feel free to add an issue to the project.
 
-Major Similarities
-------------------
-
-1. Terminal colours
-1. HTTP Support
-
 Todo
 ----
 
