@@ -1,13 +1,25 @@
 PyHTTP-Console
 ==============
 
+Every once in a while when developing a web-app, it becomes useful to send out custom requests
+to the server to see how it responds in particular scenarios. Also, just accessing servers
+over HTTP on a command line is a nifty tool to have.
+
+This project is a python implementation of a Read, Eval, Print Loop (similar to a Shell) 
+which helps you work with HTTP servers easily and efficiently.
+
 This program is inspired by Cloudhead's node.js based http-console
 located at <http://github.com/cloudhead/http-console>
 
 QuickStart
 --------
-Assuming you have CouchDB installed and running on port 5984, this is how a typical session looks like.
+Assuming you have [CouchDB](http://couchdb.apache.org) installed and running on port 5984, this is how a typical session looks like.
+ 
 ![Usage Example][1]
+
+You can also use this with a Django Development server by just changing the port by issuing:
+
+    http://localhost:5984> port 8000
 
 [1]: http://dl.dropbox.com/u/7409018/http-console.png
 
