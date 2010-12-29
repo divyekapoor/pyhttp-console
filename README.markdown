@@ -2,7 +2,7 @@ PyHTTP-Console
 ==============
 
 This program is inspired by Cloudhead's node.js based http-console
-located at http://github.com/cloudhead/http-console
+located at <http://github.com/cloudhead/http-console>
 
 QuickStart
 --------
@@ -10,6 +10,18 @@ Assuming you have CouchDB installed and running on port 5984, this is how a typi
 ![Usage Example][1]
 
 [1]: http://dl.dropbox.com/u/7409018/http-console.png
+
+Features
+--------
+
+1. Server Navigation using a filesystem like approach: cd
+1. Server queries on relative and absolute paths using GET or POST
+1. Header highlights
+
+Other features thanks to nifty python modules:
+
+1. Tab completion of commands
+1. Command History
 
 
 Installation
