@@ -76,6 +76,7 @@ class HTTPRepl(Cmd):
             self._print_headers(f.headers.dict)
             print "\n"
             print f.read()
+            f.close()
         except (urllib2.HTTPError, urllib2.URLError, IOError) as e:
             print colored(e, 'red', attrs=['bold'])
 
@@ -94,30 +95,57 @@ class HTTPRepl(Cmd):
     def _restore_path(self):
         self.urlparts["path"] = self._old_path
 
+    def _prepare_url(self, line):
+        self._set_temp_path(line)
+        url = self._get_url()
+        self._restore_path()
+        print "Requesting ", colored(url, "yellow")
+        return url
+
     def do_get(self, line):
         """ Perform a GET request on the server indicated by the current path """
         old_query = self.urlparts["query"]
         self.urlparts["query"] = self.data
-
-        self._set_temp_path(line)
-        url = self._get_url()
-        print "Requesting ", colored(url, "yellow")
+        
+        url = self._prepare_url(line)
         request = Request(url, None, self.headers)
         self._execute(request)
 
         self.urlparts["query"] = old_query
-        self._restore_path()
 
     def do_post(self, line):
-        """ Perform a POST request on a URL. Set the data for the post request via the data argument."""
-        self._set_temp_path(line)
-
-        url = self._get_url()
-        print "Requesting ", colored(url, "yellow")
+        """ Perform a POST request on a URL. Set the data for the post request via the data command."""
+        url = self._prepare_url(line)
         request = Request(url, self.data, self.headers)
         self._execute(request)
 
-        self._restore_path()
+    def do_put(self, line):
+        """Perform a PUT request on a URL. Set the data for the PUT request via the data command."""
+        url = self._prepare_url(line)
+        request = Request(url, self.data, self.headers)
+        # HACK: support PUT, HEAD and DELETE - 
+        # via http://stackoverflow.com/questions/111945/is-there-any-way-to-do-http-put-in-python
+        request.get_method = lambda: "PUT" 
+        self._execute(request)
+
+    def do_delete(self, line):
+        """Perform a DELETE request on a URL. Set the data for the DELETE request via the data command."""
+        url = self._prepare_url(line)
+        request = Request(url, self.data, self.headers)
+        # HACK: support PUT, HEAD and DELETE - 
+        # via http://stackoverflow.com/questions/111945/is-there-any-way-to-do-http-put-in-python
+        request.get_method = lambda: "DELETE"
+        self._execute(request)
+
+    def do_head(self, line):
+        """Perform a HEAD request on a URL. The head request should typically have no data supplied."""
+        url = self._prepare_url(line)
+        request = Request(url, self.data, self.headers)
+        # HACK: support PUT, HEAD and DELETE - 
+        # via http://stackoverflow.com/questions/111945/is-there-any-way-to-do-http-put-in-python
+        request.get_method = lambda: "HEAD"
+        self._execute(request)
+        
 
     def do_headers(self, line):
         """ Get or set the headers that will be sent along with the request.
