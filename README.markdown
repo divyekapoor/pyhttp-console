@@ -29,6 +29,7 @@ Features
 1. Server Navigation using a filesystem like approach: cd
 1. Server queries on relative and absolute paths using GET or POST
 1. Header highlights
+1. A node.js based HTTP echo server for testing
 
 Other features thanks to nifty python modules:
 
@@ -66,7 +67,7 @@ In case you encounter bugs, feel free to add an issue to the project.
 Todo
 ----
 
-1. PUT, HEAD support
 1. Tests
 1. Headers add and remove support
 1. HTTP response body colorize
+1. Update code to use the httplib2 python library to enable Keep-Alive and other goodies.
